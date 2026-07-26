@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزئیات محصول - تلاونگ</title>
+    <style>
+
+ @font-face {
+    font-family: "IrSans";
+    src: url("../fonts/IRANSansX-Regular.woff");
+    src: url("../fonts/IRANSansXFaNum-Regular.ttf");
+}
+
+        :root {
+            --primary-color: #674937;
+            --primary-dark: #4e3526;
+            --bg-light: #fbf9f7;
+            --text-main: #333333;
+            --text-muted: #777777;
+            --border-color: #e5ded8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'IrSans';
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* کانتینر اصلی صفحه */
+        .product-page-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(103, 73, 55, 0.08);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        /* هدر صفحه و دکمه بازگشت */
+        .page-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 14px;
+            background: #f4efe9;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #ffffff;
+        }
+
+        /* بدنه اصلی (گرید محصول) */
+        .product-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .product-content {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+        }
+
+        /* بخش گالری و اسلایدر */
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            background: #fdfbf9;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        /* دکمه‌های چپ و راست اسلایدر */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(103, 73, 55, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .slider-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .prev-btn { right: 15px; }
+        .next-btn { left: 15px; }
+
+        /* تصاویر بندانگشتی (Thumbnails) */
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .thumbnail {
+            width: 75px;
+            height: 75px;
+            border-radius: 8px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+
+        .thumbnail.active, .thumbnail:hover {
+            border-color: var(--primary-color);
+            opacity: 1;
+        }
+
+        /* بخش اطلاعات محصول */
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .product-price-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f4efe9;
+            padding: 12px 18px;
+            border-radius: 10px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .currency {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .product-description h3 {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .product-description p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .features-list li {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .features-list li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* دکمه ثبت سفارش */
+        .order-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            text-align: center;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(103, 73, 55, 0.2);
+        }
+
+        .order-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* پنجره پاپ‌آپ (Modal) مخصوص دسکتاپ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .modal-box p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .phone-highlight {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: #f4efe9;
+            padding: 10px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            direction: ltr;
+        }
+
+        .close-modal-btn {
+            background: #e5ded8;
+            color: var(--text-main);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .close-modal-btn:hover {
+            background: #d4cbc3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="product-page-container">
+        <!-- هدر و دکمه برگشت -->
+        <div class="page-header">
+            <a href="../index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                بازگشت به صفحه قبل
+            </a>
+        </div>
+
+        <!-- محتوای محصول -->
+        <div class="product-content">
+            <!-- ستون گالری و اسلایدر -->
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    <button class="slider-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+                    <img id="mainProductImage" src="../images/phones/Egg2.png" alt="تصویر محصول">
+                    <button class="slider-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+                </div>
+                <!-- تصاویر بندانگشتی -->
+                <div class="thumbnail-container">
+                    <img src="../images/itemIMG/e1.png" class="thumbnail active" onclick="setSlide(0)" alt="تومنیل 1">
+                    <img src="../images/itemIMG/e3.png" class="thumbnail" onclick="setSlide(1)" alt="تومنیل 2">
+                    <img src="../images/phones/Egg2.png" class="thumbnail" onclick="setSlide(2)" alt="تومنیل 3">
+                </div>
+            </div>
+
+            <!-- ستون اطلاعات و خرید -->
+            <div class="product-details">
+                <h1 class="product-title">4 شانه تخم مرغ</h1>
+                
+                <div class="product-price-box">
+                    <span class="product-price">5,000,000</span>
+                    <span class="currency">تومان</span>
+                </div>
+
+                <div class="product-description">
+                    <h3>توضیحات محصول</h3>
+                    <p>این محصول با بالاترین کیفیت و استانداردهای روز تهیه شده است. کاملاً ارگانیک، تازه و مناسب برای مصارف روزانه شما عزیزان با بسته‌بندی کاملاً بهداشتی.</p>
+                </div>
+
+                <div class="product-description">
+                    <h3>ویژگی‌های اصلی</h3>
+                    <ul class="features-list">
+                        <li>کیفیت تضمین‌شده و درجه یک</li>
+                        <li>بسته‌بندی مقاوم و استاندارد</li>
+                        <li>ارسال سریع و مطمئن</li>
+                    </ul>
+                </div>
+
+                <!-- دکمه هوشمند ثبت سفارش -->
+                <button class="order-btn" onclick="handleOrderClick()">ثبت سفارش و خرید</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال (پنجره راهنما) برای دسکتاپ -->
+    <div class="modal-overlay" id="orderModal" onclick="closeModalOutside(event)">
+        <div class="modal-box">
+            <h3>ثبت سفارش تلفنی</h3>
+            <p>برای ثبت سفارش این محصول، لطفا با شماره زیر تماس حاصل فرمایید:</p>
+            <div class="phone-highlight">0911-154-6987</div>
+            <div>
+                <button class="close-modal-btn" onclick="closeModal()">متوجه شدم</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // آرایه تصاویر محصول برای اسلایدر
+        const productImages = [
+            "../images/itemIMG/e1.png",
+            "../images/itemIMG/e3.png",
+            "../images/phones/Egg2.png"
+        ];
+        
+        let currentSlideIndex = 0;
+
+        function updateSlider() {
+            document.getElementById('mainProductImage').src = productImages[currentSlideIndex];
+            
+            // به‌روزرسانی استایل تصاویر بندانگشتی
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                if (index === currentSlideIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= productImages.length) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex < 0) {
+                currentSlideIndex = productImages.length - 1;
+            }
+            updateSlider();
+        }
+
+        function setSlide(index) {
+            currentSlideIndex = index;
+            updateSlider();
+        }
+
+        // مدیریت هوشمند دکمه ثبت سفارش (موبایل vs دسکتاپ)
+        function handleOrderClick() {
+            // تشخیص موبایل بر اساس ابعاد صفحه نمایش یا نوع لمسی بودن
+            const isMobile = window.innerWidth <= 768 || ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
+            
+            if (isMobile) {
+                // اگر کاربر با موبایل باشد مستقیماً تماس برقرار می‌کند
+                window.location.href = "tel:09111546987";
+            } else {
+                // اگر کاربر با دسکتاپ باشد پاپ‌آپ راهنما باز می‌شود
+                document.getElementById('orderModal').style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function closeModalOutside(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
